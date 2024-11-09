@@ -5,12 +5,39 @@
 </head>
 <body>
   <script>
+    // Function to send message to the extension
+    function sendMessageToExtension(data) {
+      // Send message to all browser windows
+      window.opener.postMessage({
+          source: 'fedcm-login',
+          ...data
+      }, '*');
+    } 
+
+    // Example usage after your login logic completes
+    function onLoginComplete(success, userData) {
+      sendMessageToExtension({
+            success: success,
+            userData: userData
+      });
+      // Close the popup window
+      window.close();
+    }
+
     async function initiateFedCM() {
       try {
 
       if (!window.navigator?.credentials?.get) {
-        throw new Error('FedCM is not supported in this browser');
-      }
+          throw new Error('FedCM is not supported in this browser');
+        }
+
+        console.log("initiateFedCM");
+
+        // Sleep for 2 seconds before continuing
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // TODO: move to other place
+        onLoginComplete(true, { data: "some data ..."});
         
         const credential = await navigator.credentials.get({
           identity: {
