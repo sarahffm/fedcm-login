@@ -1,84 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>FedCM Login</title>
-</head>
-<body>
-  <script>
-    const extensionId = "inmnbplgaeoaibelkmoniigdbheoikld";
+  <head>
+    <title>FedCM Login</title>
+  </head>
+  <body>
+    <script>
+      const extensionId = "inmnbplgaeoaibelkmoniigdbheoikld";
 
-    // doc example
-    // chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: url},
-    //   function(response) {
-    //     if (!response.success)
-    //       handleError(url);
-    // });
-
-    // Function to send message to the extension
-    function sendMessageToExtension(data) {
-      console.log("data to send:", data);
-
-      // Send message to extension - fixed format
-      chrome?.runtime?.sendMessage(extensionId, data);
-    } 
-
-    // Example usage after your login logic completes
-    function onLoginComplete(success, userData) {
-      sendMessageToExtension({
-            success: success,
-            userData: userData
-      });
-    }
-
-    async function initiateFedCM() {
-      try {
-
-      if (!window.navigator?.credentials?.get) {
-          throw new Error('FedCM is not supported in this browser');
-        }
-
-        console.log("initiateFedCM");
-
-        // Sleep for 2 seconds before continuing
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        console.log("after sleep");
-
-        // TODO: move to other place
-        onLoginComplete(true, { data: "some data ..."});
-        
-        const credential = await navigator.credentials.get({
-          identity: {
-            context: "signup",
-            providers: [
-              {
-                configURL: "https://accounts.google.com/gsi/fedcm.json",
-                clientId: "497414815112-g2ict94mnksuep7f214kh1cqv1lq2i5f.apps.googleusercontent.com"
-              }
-            ]
-          }
-        });
-
-        console.log("credentials:", credential);
-
-        if (credential && credential.idToken) {
-          // Send the ID token back to the opener (your extension)
-          chrome?.runtime?.sendMessage(extensionId, credential.idToken);
-          // Optionally, close the popup
-          // window.close();
-        } else {
-          throw new Error('No ID token received.');
-        }
-      } catch (error) {
-        // Send the error back to the opener
-        console.log(error);
-        chrome?.runtime?.sendMessage(extensionId, error.message);
-        //window.close();
+      // Sends a message to the extension
+      function sendMessageToExtension(data) {
+        console.log("data to send:", data);
+        chrome?.runtime?.sendMessage(extensionId, data);
       }
-    }
 
-    // Start the FedCM flow when the page loads
-    window.onload = initiateFedCM;
-  </script>
-</body>
+      function onLoginComplete(success, userData) {
+        sendMessageToExtension({
+          success: success,
+          userData: userData,
+        });
+      }
+
+      async function initiateFedCM() {
+        try {
+          if (!window.navigator?.credentials?.get) {
+            throw new Error("FedCM is not supported in this browser");
+          }
+
+          // TODO: move to other place
+          onLoginComplete(true, { data: "some data ..." });
+
+          const credential = await navigator.credentials.get({
+            identity: {
+              context: "signup",
+              providers: [
+                {
+                  configURL: "https://accounts.google.com/gsi/fedcm.json",
+                  clientId:
+                    "497414815112-g2ict94mnksuep7f214kh1cqv1lq2i5f.apps.googleusercontent.com",
+                },
+              ],
+            },
+          });
+
+          console.log("credentials:", credential);
+
+          if (credential && credential.idToken) {
+            // Send the ID token back to the opener (your extension)
+            chrome?.runtime?.sendMessage(extensionId, credential.idToken);
+            // Optionally, close the popup
+            // window.close();
+          } else {
+            throw new Error("No ID token received.");
+          }
+        } catch (error) {
+          // Send the error back to the opener
+          console.log(error);
+          chrome?.runtime?.sendMessage(extensionId, error.message);
+          //window.close();
+        }
+      }
+
+      // Start the FedCM flow when the page loads
+      window.onload = initiateFedCM;
+    </script>
+  </body>
 </html>
