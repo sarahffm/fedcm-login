@@ -7,11 +7,11 @@
   <script>
     // Function to send message to the extension
     function sendMessageToExtension(data) {
-      // Send message to all browser windows
+      // Send message to extension
       chrome?.runtime?.sendMessage({
           source: 'fedcm-login',
           ...data
-      }, '*');
+      });
     } 
 
     // Example usage after your login logic completes
@@ -32,7 +32,6 @@
         }
 
         console.log("initiateFedCM");
-        console.log("window opener:", window.opener);
 
         // Sleep for 2 seconds before continuing
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -58,7 +57,7 @@
 
         if (credential && credential.idToken) {
           // Send the ID token back to the opener (your extension)
-          chrome?.runtime?.sendMessage({ idToken: credential.idToken }, '*');
+          chrome?.runtime?.sendMessage({ idToken: credential.idToken });
           // Optionally, close the popup
           window.close();
         } else {
@@ -67,7 +66,7 @@
       } catch (error) {
         // Send the error back to the opener
         console.log(error);
-        chrome?.runtime?.sendMessage({ error: error.message }, '*');
+        chrome?.runtime?.sendMessage({ error: error.message });
         window.close();
       }
     }
