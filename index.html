@@ -16,6 +16,8 @@
 
     // Function to send message to the extension
     function sendMessageToExtension(data) {
+      console.log("data to send:", data);
+
       // Send message to extension
       chrome?.runtime?.sendMessage({
         extensionId, ...data
