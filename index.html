@@ -30,8 +30,6 @@
             success: success,
             userData: userData
       });
-      // Close the popup window
-      window.close();
     }
 
     async function initiateFedCM() {
@@ -69,7 +67,7 @@
           // Send the ID token back to the opener (your extension)
           chrome?.runtime?.sendMessage(extensionId, credential.idToken);
           // Optionally, close the popup
-          window.close();
+          // window.close();
         } else {
           throw new Error('No ID token received.');
         }
@@ -77,7 +75,7 @@
         // Send the error back to the opener
         console.log(error);
         chrome?.runtime?.sendMessage(extensionId, error.message);
-        window.close();
+        //window.close();
       }
     }
 
