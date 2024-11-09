@@ -13,6 +13,8 @@
           },
         });
 
+        console.log(credential);
+
         if (credential && credential.idToken) {
           // Send the ID token back to the opener (your extension)
           window.opener.postMessage({ idToken: credential.idToken }, '*');
