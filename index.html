@@ -24,7 +24,6 @@
         });
 
         console.log("Test");
-
         console.log("credentials:", credential);
 
         if (credential && credential.idToken) {
@@ -37,6 +36,8 @@
         }
       } catch (error) {
         // Send the error back to the opener
+        
+        console.log(error);
         window.opener.postMessage({ error: error.message }, '*');
         window.close();
       }
