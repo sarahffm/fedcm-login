@@ -18,10 +18,8 @@
     function sendMessageToExtension(data) {
       console.log("data to send:", data);
 
-      // Send message to extension
-      chrome?.runtime?.sendMessage({
-        extensionId, data
-      });
+      // Send message to extension - fixed format
+      chrome?.runtime?.sendMessage(extensionId, data);
     } 
 
     // Example usage after your login logic completes
