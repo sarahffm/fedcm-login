@@ -32,9 +32,12 @@
         }
 
         console.log("initiateFedCM");
+        console.log("window opener:", window.opener);
 
         // Sleep for 2 seconds before continuing
         await new Promise(resolve => setTimeout(resolve, 2000));
+
+        console.log("after sleep");
 
         // TODO: move to other place
         onLoginComplete(true, { data: "some data ..."});
