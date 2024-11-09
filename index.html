@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FedCM Login</title>
+</head>
+<body>
+  <script>
+    async function initiateFedCM() {
+      try {
+        const credential = await navigator.credentials.get({
+          federated: {
+            providers: ['https://accounts.google.com'],
+          },
+        });
+
+        if (credential && credential.idToken) {
+          // Send the ID token back to the opener (your extension)
+          window.opener.postMessage({ idToken: credential.idToken }, '*');
+          // Optionally, close the popup
+          window.close();
+        } else {
+          throw new Error('No ID token received.');
+        }
+      } catch (error) {
+        // Send the error back to the opener
+        window.opener.postMessage({ error: error.message }, '*');
+        window.close();
+      }
+    }
+
+    // Start the FedCM flow when the page loads
+    window.onload = initiateFedCM;
+  </script>
+</body>
+</html>
