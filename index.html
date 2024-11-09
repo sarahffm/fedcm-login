@@ -7,12 +7,18 @@
   <script>
     const extensionId = "inmnbplgaeoaibelkmoniigdbheoikld";
 
+    // doc example
+    // chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: url},
+    //   function(response) {
+    //     if (!response.success)
+    //       handleError(url);
+    // });
+
     // Function to send message to the extension
     function sendMessageToExtension(data) {
       // Send message to extension
       chrome?.runtime?.sendMessage({
-        extensionId,
-        message: data
+        extensionId, ...data
       });
     } 
 
@@ -59,7 +65,7 @@
 
         if (credential && credential.idToken) {
           // Send the ID token back to the opener (your extension)
-          chrome?.runtime?.sendMessage({ extensionId, message: credential.idToken });
+          chrome?.runtime?.sendMessage(extensionId, credential.idToken);
           // Optionally, close the popup
           window.close();
         } else {
@@ -68,7 +74,7 @@
       } catch (error) {
         // Send the error back to the opener
         console.log(error);
-        chrome?.runtime?.sendMessage({ extensionId, message: error.message });
+        chrome?.runtime?.sendMessage(extensionId, error.message);
         window.close();
       }
     }
