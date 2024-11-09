@@ -14,11 +14,11 @@
         
         const credential = await navigator.credentials.get({
           identity: {
+            context: "signup",
             providers: [
               {
                 configURL: "https://accounts.google.com",
-                clientId: "497414815112-g2ict94mnksuep7f214kh1cqv1lq2i5f.apps.googleusercontent.com",
-                nonce: "aeuhfiluaegfiehabfceiuhf8aheufi"
+                clientId: "497414815112-g2ict94mnksuep7f214kh1cqv1lq2i5f.apps.googleusercontent.com"
               }
             ]
           }
