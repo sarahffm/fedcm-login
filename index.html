@@ -16,14 +16,13 @@
           identity: {
             providers: [
               {
-                url: "https://accounts.google.com",
+                configURL: "https://accounts.google.com",
                 clientId: "497414815112-g2ict94mnksuep7f214kh1cqv1lq2i5f.apps.googleusercontent.com"
               }
             ]
           }
         });
 
-        console.log("Test");
         console.log("credentials:", credential);
 
         if (credential && credential.idToken) {
@@ -36,7 +35,6 @@
         }
       } catch (error) {
         // Send the error back to the opener
-        
         console.log(error);
         window.opener.postMessage({ error: error.message }, '*');
         window.close();
